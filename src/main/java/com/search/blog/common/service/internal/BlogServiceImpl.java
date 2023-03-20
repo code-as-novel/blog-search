@@ -25,15 +25,14 @@ public class BlogServiceImpl implements BlogService{
 
         BlogSearchResponseDto result = daumApi.getDaumBlogSearch(blogSearchRequestDto);
         blogSearchCountRepository.findById(blogSearchRequestDto.getQuery())
-                                 .ifPresentOrElse(searchCount -> searchCount.setCount(searchCount.getCount() + 1), 
-                                 () -> {
-                                    BlogSearchCount searchCount = BlogSearchCount.builder()
-                                                                                .query(blogSearchRequestDto.getQuery())
-                                                                                .count(1)
-                                                                                .build();
-                                    blogSearchCountRepository.save(searchCount);
-                                 });
+                                 .ifPresentOrElse(searchCount -> searchCount.add(), 
+                                 () -> blogSearchCountRepository.save(BlogSearchCount.of(blogSearchRequestDto.getQuery())));
 
         return result;
+    }
+
+    @Override
+    public List<BlogSearchCount> getTopQuery(){
+        return blogSearchCountRepository.findTop10ByOrderByCountDesc();
     }
 }
