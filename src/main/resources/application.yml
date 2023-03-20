@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: blog-search
+  profiles: 
+    group:
+      "local": "common, local"
+      "dev": "common, dev"
+    active: local
+    
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:blog
+    username: sa
+    password: 
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format-sql: true
+
+feign:
+  httpclient:
+    disable-ssl-validation: true
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+        logger-level: FULL
+
+apis:
+  daum:
+    url: dapi.kakao.com
+    authorization: d90268a0a16d238bd8b09652221f391a
+    blog:
+      version: v2
+      api: /search/web
+
+logging:
+  level:
+    org.hibernate.SQL: debug
