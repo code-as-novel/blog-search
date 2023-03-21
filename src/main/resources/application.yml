@@ -3,8 +3,7 @@ spring:
     name: blog-search
   profiles: 
     group:
-      "local": "common, local"
-      "dev": "common, dev"
+      "local": "local"
     active: local
     
 ---
@@ -35,7 +34,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         format-sql: true
@@ -60,4 +59,5 @@ apis:
 
 logging:
   level:
-    org.hibernate.SQL: debug
+    root: info
+    org.hibernate.SQL: info

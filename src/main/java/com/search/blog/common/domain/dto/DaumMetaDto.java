@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @ToString
 @Getter
-public class DaumMeta {
+public class DaumMetaDto {
     private int total_count;
     private int pageable_count;
     private boolean is_end;

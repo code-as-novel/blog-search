@@ -12,15 +12,15 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogSearchCount {
+public class BlogRank {
     @Id
     private String query;
     
     @Setter
     private int count;
 
-    public static BlogSearchCount of(String query){
-        return new BlogSearchCount(query, 1);
+    public static BlogRank of(String query){
+        return new BlogRank(query, 1);
     }
 
     public void add(){

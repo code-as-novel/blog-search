@@ -1,0 +1,1 @@
+create index inx_count on blog_rank(count);

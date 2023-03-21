@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.search.blog.common.domain.dto.BlogSearchRequestDto;
 import com.search.blog.common.domain.dto.BlogSearchResponseDto;
-import com.search.blog.common.domain.entity.BlogSearchCount;
-import com.search.blog.common.repository.BlogSearchCountRepository;
+import com.search.blog.common.domain.entity.BlogRank;
+import com.search.blog.common.repository.BlogRankRepository;
 import com.search.blog.common.service.external.DaumApi;
 
 import lombok.RequiredArgsConstructor;
@@ -17,22 +17,30 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BlogServiceImpl implements BlogService{
     final private DaumApi daumApi;
-    final private BlogSearchCountRepository blogSearchCountRepository;
+    final private BlogRankRepository blogSearchCountRepository;
 
     @Override
     @Transactional
     public BlogSearchResponseDto search(final BlogSearchRequestDto blogSearchRequestDto){
-
-        BlogSearchResponseDto result = daumApi.getDaumBlogSearch(blogSearchRequestDto);
-        blogSearchCountRepository.findById(blogSearchRequestDto.getQuery())
-                                 .ifPresentOrElse(searchCount -> searchCount.add(), 
-                                 () -> blogSearchCountRepository.save(BlogSearchCount.of(blogSearchRequestDto.getQuery())));
+        BlogSearchResponseDto result = requestSearchApi(blogSearchRequestDto);
+        addRank(blogSearchRequestDto);
 
         return result;
     }
 
+    private BlogSearchResponseDto requestSearchApi(final BlogSearchRequestDto blogSearchRequestDto) {
+        return daumApi.getDaumBlogSearch(blogSearchRequestDto);
+    }
+
+    private void addRank(final BlogSearchRequestDto blogSearchRequestDto){
+        blogSearchCountRepository.findById(blogSearchRequestDto.getQuery())
+                                 .ifPresentOrElse(searchCount -> searchCount.add(), 
+                                   () -> blogSearchCountRepository.save(BlogRank.of(blogSearchRequestDto.getQuery())));
+    }
+
     @Override
-    public List<BlogSearchCount> getTopQuery(){
+    @Transactional(readOnly = true)
+    public List<BlogRank> getTopQuery(){
         return blogSearchCountRepository.findTop10ByOrderByCountDesc();
     }
 }

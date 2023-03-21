@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @ToString
 @Getter
-public class DaumDocument {
+public class DaumDocumentDto {
     private String title;
     private String contents;
     private String url;

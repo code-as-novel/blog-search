@@ -10,6 +10,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BlogSearchResponseDto {
-    private DaumMeta meta;
-    private List<DaumDocument> documents;
+    private DaumMetaDto meta;
+    private List<DaumDocumentDto> documents;
 }
