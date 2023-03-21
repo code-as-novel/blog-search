@@ -1,4 +1,4 @@
-package com.search.blog.common.domain.dto;
+package com.search.blog.common.dto;
 
 import lombok.Getter;
 import lombok.ToString;

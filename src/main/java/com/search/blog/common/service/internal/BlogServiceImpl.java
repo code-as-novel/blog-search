@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.search.blog.common.domain.dto.BlogSearchRequestDto;
-import com.search.blog.common.domain.dto.BlogSearchResponseDto;
 import com.search.blog.common.domain.entity.BlogRank;
+import com.search.blog.common.dto.BlogSearchRequestDto;
+import com.search.blog.common.dto.BlogSearchResponseDto;
 import com.search.blog.common.repository.BlogRankRepository;
 import com.search.blog.common.service.external.DaumApi;
 
@@ -21,14 +21,14 @@ public class BlogServiceImpl implements BlogService{
 
     @Override
     @Transactional
-    public BlogSearchResponseDto search(final BlogSearchRequestDto blogSearchRequestDto){
+    public BlogSearchResponseDto search(final BlogSearchRequestDto blogSearchRequestDto)  throws Exception {
         BlogSearchResponseDto result = requestSearchApi(blogSearchRequestDto);
         addRank(blogSearchRequestDto);
 
         return result;
     }
 
-    private BlogSearchResponseDto requestSearchApi(final BlogSearchRequestDto blogSearchRequestDto) {
+    private BlogSearchResponseDto requestSearchApi(final BlogSearchRequestDto blogSearchRequestDto) throws Exception {
         return daumApi.getDaumBlogSearch(blogSearchRequestDto);
     }
 

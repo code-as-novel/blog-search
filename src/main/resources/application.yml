@@ -60,4 +60,3 @@ apis:
 logging:
   level:
     root: info
-    org.hibernate.SQL: info
