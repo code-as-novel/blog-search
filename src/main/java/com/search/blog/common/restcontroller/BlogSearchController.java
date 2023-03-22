@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class BlogSearchController {
     final private BlogService blogService;
 
-    @GetMapping (path="/v1.0/blog-search")
+    @GetMapping (path="/v1.{minor_version:[0-9]}/blog-search")
     public ResponseEntity<BlogSearchResponseDto> retrieveBlogSearch(
                     @Validated BlogSearchRequestDto blogSearchRequestDto) throws Exception {
         return ResponseEntity.ok(blogService.search(blogSearchRequestDto));

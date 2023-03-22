@@ -23,6 +23,10 @@ public class ErrorResponseDto {
         return new ErrorResponseDto(HttpStatus.BAD_REQUEST.name(), getMessage(ex.getBindingResult()));
     }
 
+    public static ErrorResponseDto of(IllegalArgumentException ex){
+        return new ErrorResponseDto(HttpStatus.BAD_REQUEST.name(), "Illegal Argument");
+    }
+
     public static ErrorResponseDto of(Exception ex){
         return new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.name(), ex.getMessage());
     }

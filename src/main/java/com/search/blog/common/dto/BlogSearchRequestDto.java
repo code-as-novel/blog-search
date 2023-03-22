@@ -14,7 +14,17 @@ import lombok.ToString;
 public class BlogSearchRequestDto {
     @NotBlank(message = "Input is mandatory")
     private String query;
-    private String sort; //TODO: enum으로 수정
+    private Sort sort;
     private Integer page;
     private Integer size;
+
+    public enum Sort{
+        ACCURACY("accuracy"), RECENCY("recency");
+
+        public String value;
+
+        Sort(String value){
+            this.value = value;
+        }
+    }
 }

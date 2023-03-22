@@ -18,18 +18,17 @@ public class DefaultExceptionAdvice {
     
     @ExceptionHandler(FeignException.class)
     protected ResponseEntity<Object> handleException(final FeignException feignException){
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-
-        try{
-           status = HttpStatus.valueOf(feignException.status());
-        }catch(Exception e){}
-
-        return new ResponseEntity<>(new ErrorResponseDto(status.name(), feignException.getMessage()), status);
+        return new ResponseEntity<>(ErrorResponseDto.of(feignException), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<Object> handleException(final BindException bindException){
         return new ResponseEntity<>(ErrorResponseDto.of(bindException), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected ResponseEntity<Object> handleException(final IllegalArgumentException illegalArgumentException){
+        return new ResponseEntity<>(ErrorResponseDto.of(illegalArgumentException), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

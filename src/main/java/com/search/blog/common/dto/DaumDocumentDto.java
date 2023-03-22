@@ -9,5 +9,5 @@ public class DaumDocumentDto {
     private String title;
     private String contents;
     private String url;
-    private String datetime;    //TODO: datetime으로 수정할 것
+    private String datetime;
 }

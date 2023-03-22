@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.search.blog.common.domain.entity.BlogRank;
+import com.search.blog.common.dto.BlogSearchApiDto;
 import com.search.blog.common.dto.BlogSearchRequestDto;
 import com.search.blog.common.dto.BlogSearchResponseDto;
 import com.search.blog.common.repository.BlogRankRepository;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BlogServiceImpl implements BlogService{
     final private DaumApi daumApi;
-    final private BlogRankRepository blogSearchCountRepository;
+    final private BlogRankRepository blogRankRepository;
 
     @Override
     @Transactional
@@ -29,18 +30,18 @@ public class BlogServiceImpl implements BlogService{
     }
 
     private BlogSearchResponseDto requestSearchApi(final BlogSearchRequestDto blogSearchRequestDto) throws Exception {
-        return daumApi.getDaumBlogSearch(blogSearchRequestDto);
+        return daumApi.getDaumBlogSearch(BlogSearchApiDto.of(blogSearchRequestDto));
     }
 
     private void addRank(final BlogSearchRequestDto blogSearchRequestDto){
-        blogSearchCountRepository.findById(blogSearchRequestDto.getQuery())
+        blogRankRepository.findById(blogSearchRequestDto.getQuery())
                                  .ifPresentOrElse(searchCount -> searchCount.add(), 
-                                   () -> blogSearchCountRepository.save(BlogRank.of(blogSearchRequestDto.getQuery())));
+                                   () -> blogRankRepository.save(BlogRank.of(blogSearchRequestDto.getQuery())));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<BlogRank> getTopQuery(){
-        return blogSearchCountRepository.findTop10ByOrderByCountDesc();
+        return blogRankRepository.findTop10ByOrderByCountDesc();
     }
 }
